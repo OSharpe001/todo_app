@@ -44,7 +44,7 @@ function addTodo(todo) {
         // "CONTEXTMENU" IS BASICALLY THE RIGHT CLICK (OR "TWO-FINGER CLICK" ON TRACKPADS)
         todoEL.addEventListener("contextmenu", (e) => {
             e.preventDefault();
-            
+
             // REMOVE THE LIST ITEM
             todoEL.remove();
             updateLS();
