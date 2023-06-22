@@ -2,6 +2,13 @@
 const form = document.getElementById("form");
 const input = document.getElementById("input");
 const todoUL = document.getElementById("todos");
+const todos = JSON.parse(localStorage.getItem("todos"));
+
+if (todos) {
+    todos.forEach(todo => {
+        addTodo(todo);
+    });
+};
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -16,7 +23,7 @@ function addTodo(todo) {
     if (todoText) {
         const todoEL = document.createElement("li");
         if (todo && todo.completed) {
-            todo.classList.add("completed");
+            todoEL.classList.add("completed");
         };
 
         // MAKE THE TEXT OF THE LIST ITEM THE SAME AS THE INPUT
@@ -31,13 +38,31 @@ function addTodo(todo) {
         // ADDING "COMPLETED" CLASS TO LIST ELEMENTS THAT WERE (LEFT) CLICKED
         todoEL.addEventListener("click", ()=> {
             todoEL.classList.toggle("completed");
+            updateLS();
         });
 
         // "CONTEXTMENU" IS BASICALLY THE RIGHT CLICK (OR "TWO-FINGER CLICK" ON TRACKPADS)
         todoEL.addEventListener("contextmenu", (e) => {
             e.preventDefault();
+            
             // REMOVE THE LIST ITEM
-            todoEL.remove()
-        })
+            todoEL.remove();
+            updateLS();
+        });
     };
+    updateLS();
+};
+
+function updateLS() {
+    const todosEl = document.querySelectorAll("li"); //NOTES LIST
+    const todos = [];
+
+    todosEl.forEach(todoEl => {
+        todos.push({
+            text: todoEl.innerText,
+            completed: todoEl.classList.contains("completed"),
+        });
+    });
+
+    localStorage.setItem("todos", JSON.stringify(todos));
 };
